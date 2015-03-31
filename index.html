@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Docker Exec</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Docker Exec</h1>
+        <p>Execute code in many languages with Docker!</p>
+        <p class="view"><a href="https://github.com/docker-exec/dexec">View the Project on GitHub</a></p>
+        <ul>
+          <li class="single"><a href="https://github.com/docker-exec/dexec">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h3>
+<a id="what" class="anchor" href="#what" aria-hidden="true"><span class="octicon octicon-link"></span></a>What?</h3>
+
+<p>Docker Exec is a collection of Docker images capable of executing code in many different programming languages without requiring a single compiler or script interpreter on your machine.</p>
+
+<p>The <code>dexec</code> command line interface provides a simple front end, picking the appropriate Docker image based on the source extension.</p>
+
+<p><strong>See the <a href="https://github.com/docker-exec/dexec/blob/master/README.md#installation">dexec installation guide</a> to get started</strong></p>
+
+<p><img src="https://docker-exec.github.io/images/dexec-short.gif" alt="dexec demo animation"></p>
+
+<p>Let's take a closer look at one of the examples, <a href="https://github.com/docker-exec/cpp/blob/v1.0.0/test/helloworld.cpp">helloworld.cpp</a>:</p>
+
+<div class="highlight highlight-c++"><pre>#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>iostream<span class="pl-pds">&gt;</span></span>
+<span class="pl-k">int</span> <span class="pl-en">main</span>() {
+    std::cout &lt;&lt; <span class="pl-s"><span class="pl-pds">"</span>Hello, World!<span class="pl-pds">"</span></span> &lt;&lt; std::endl;
+    <span class="pl-k">return</span> <span class="pl-c1">0</span>;
+}</pre></div>
+
+<p>executing it is simple:</p>
+
+<pre><code>$ dexec foo.cpp
+
+Hello, World!
+</code></pre>
+
+<p>Docker Exec also supports passing arguments to the executing program, passing arguments to the compiler, mounting extra files and directories in the executing container as well as the ability to make source files executable as scripts using a shebang.</p>
+
+<h3>
+<a id="why" class="anchor" href="#why" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why?</h3>
+
+<p>Docker Exec allows you to run code in a compiled language just as easily as you can for interpreted languages. This is useful for speeding up your ability to try things out in compiled languages.</p>
+
+<p>The <a href="https://github.com/docker-exec/dexec/blob/master/README.md#reference">uniform interface</a> used to execute source for all of the different languages means that calls to  <code>dexec</code> can be shelled out from other programs who need to execute arbitrary source, for example automated answer checkers for code tests in pre-interview situations or for university exercises.</p>
+
+<p>Another benefit is that the only dependency on your machine becomes Docker instead of lots of different compilers and interpreters. Docker is a powerful tool and a lot is said about its potential for running web services and databases. However, it's also great for single program execution too and this is an example of how tools can be usefully virtualised just as well as web services.</p>
+
+<p>Further to this, the virtualisation of the compilation and execution acts as a sandbox in the event you're not entirely sure how safe a piece of code is to run.</p>
+
+<h3>
+<a id="how" class="anchor" href="#how" aria-hidden="true"><span class="octicon octicon-link"></span></a>How?</h3>
+
+<p>A Docker image exists for each target language, with an associated automated build job on Docker Hub. The image contains the compiler, runtime or interpreter for that language and a <a href="https://github.com/docker-exec/image-common">bash script</a> that does any of the following depending on the language:</p>
+
+<ul>
+<li>Compile the code and run the compiled executable.</li>
+<li>Compile the code and use a runtime to execute the compiled bytecode.</li>
+<li>Pass the code to a script interpreter.</li>
+</ul>
+
+<p>The <code>dexec</code> utility wraps the following command:</p>
+
+<div class="highlight highlight-sh"><pre>$ docker run -t --rm \
+    -v <span class="pl-s"><span class="pl-pds">$(</span><span class="pl-c1">pwd</span> -P<span class="pl-pds">)</span></span>/foo.cpp:/tmp/dexec/build/foo.cpp \
+    dexec/cpp foo.cpp</pre></div>
+
+<p>Arguments can be passed to the executing code using:</p>
+
+<pre><code>-a bar
+--arg bar
+--arg=bar
+</code></pre>
+
+<p>Arguments can be passed to the compiler (if the language has one) using:</p>
+
+<pre><code>-b foo
+--build-arg foo
+--build-arg=foo
+</code></pre>
+
+<p>Extra file and folders can be mounted in the container with <code>dexec</code> using:</p>
+
+<pre><code>-i foo.hpp
+--include foo.hpp
+--include=foo.hpp
+</code></pre>
+
+<p>Prefixing a source file with a shebang that invokes dexec will make it executable:</p>
+
+<pre><code>#!/usr/bin/env dexec
+</code></pre>
+
+<h3>
+<a id="where" class="anchor" href="#where" aria-hidden="true"><span class="octicon octicon-link"></span></a>Where?</h3>
+
+<ul>
+<li><a href="https://github.com/docker-exec/dexec">dexec on GitHub</a></li>
+<li><a href="https://bintray.com/dexec/release/dexec/view">dexec on Bintray</a></li>
+<li><a href="https://github.com/docker-exec">Docker Exec GitHub Repositories</a></li>
+<li><a href="https://hub.docker.com/repos/dexec/">Docker Exec Images on Docker Hub</a></li>
+</ul>
+
+<h3>
+<a id="which" class="anchor" href="#which" aria-hidden="true"><span class="octicon octicon-link"></span></a>Which?</h3>
+
+<p>The following languages are available:</p>
+
+<ul>
+<li><a href="https://github.com/docker-exec/bash">Bash</a></li>
+<li><a href="https://github.com/docker-exec/c">C</a></li>
+<li><a href="https://github.com/docker-exec/clojure">Clojure</a></li>
+<li><a href="https://github.com/docker-exec/coffee">CoffeeScript</a></li>
+<li><a href="https://github.com/docker-exec/cpp">C++</a></li>
+<li><a href="https://github.com/docker-exec/csharp">C#</a></li>
+<li><a href="https://github.com/docker-exec/d">D</a></li>
+<li><a href="https://github.com/docker-exec/erlang">Erlang</a></li>
+<li><a href="https://github.com/docker-exec/fsharp">F#</a></li>
+<li><a href="https://github.com/docker-exec/go">Go</a></li>
+<li><a href="https://github.com/docker-exec/groovy">Groovy</a></li>
+<li><a href="https://github.com/docker-exec/haskell">Haskell</a></li>
+<li><a href="https://github.com/docker-exec/java">Java</a></li>
+<li><a href="https://github.com/docker-exec/lisp">Lisp</a></li>
+<li><a href="https://github.com/docker-exec/node">Node JS</a></li>
+<li><a href="https://github.com/docker-exec/objc">Objective C</a></li>
+<li><a href="https://github.com/docker-exec/ocaml">OCaml</a></li>
+<li><a href="https://github.com/docker-exec/perl">Perl</a></li>
+<li><a href="https://github.com/docker-exec/php">PHP</a></li>
+<li><a href="https://github.com/docker-exec/python">Python</a></li>
+<li><a href="https://github.com/docker-exec/racket">Racket</a></li>
+<li><a href="https://github.com/docker-exec/ruby">Ruby</a></li>
+<li><a href="https://github.com/docker-exec/rust">Rust</a></li>
+<li><a href="https://github.com/docker-exec/scala">Scala</a></li>
+</ul>
+
+<h3>
+<a id="who" class="anchor" href="#who" aria-hidden="true"><span class="octicon octicon-link"></span></a>Who?</h3>
+
+<p>I'm Andy Stanton (<a href="https://github.com/andystanton">@andystanton</a>).</p>
+
+<h3>
+<a id="help" class="anchor" href="#help" aria-hidden="true"><span class="octicon octicon-link"></span></a>Help!</h3>
+
+<p>Documentation can be found and issues raised in each image's repository.</p>
+      </section>
+    </div>
+    <footer>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-48544248-4");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
