@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Docker Exec</title>
+    <title>Docker Exec by docker-exec</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
@@ -19,9 +19,9 @@
       <header>
         <h1>Docker Exec</h1>
         <p>Execute code in many languages with Docker!</p>
-        <p class="view"><a href="https://github.com/docker-exec/dexec">View the Project on GitHub</a></p>
+        <p class="view"><a href="https://github.com/docker-exec">View the Project on GitHub <small>docker-exec</small></a></p>
         <ul>
-          <li class="single"><a href="https://github.com/docker-exec/dexec">View On <strong>GitHub</strong></a></li>
+          <li class="single"><a href="https://github.com/docker-exec/docker-exec.github.io">View On <strong>GitHub</strong></a></li>
         </ul>
       </header>
       <section>
@@ -36,7 +36,7 @@
 
 <p><img src="https://docker-exec.github.io/images/dexec-short-1.0.1.gif" alt="dexec demo animation"></p>
 
-<p>Let's take a closer look at one of the examples, <a href="https://github.com/docker-exec/cpp/blob/v1.0.1/test/helloworld.cpp">helloworld.cpp</a>:</p>
+<p>Let's take a closer look at one of the examples, <a href="https://github.com/docker-exec/cpp/blob/v1.0.2/test/helloworld.cpp">helloworld.cpp</a>:</p>
 
 <div class="highlight highlight-c++"><pre>#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>iostream<span class="pl-pds">&gt;</span></span>
 <span class="pl-k">int</span> <span class="pl-en">main</span>() {
@@ -79,7 +79,7 @@ Hello, World!
 
 <div class="highlight highlight-sh"><pre>$ docker run -t --rm \
     -v <span class="pl-s"><span class="pl-pds">$(</span><span class="pl-c1">pwd</span> -P<span class="pl-pds">)</span></span>/foo.cpp:/tmp/dexec/build/foo.cpp \
-    dexec/cpp foo.cpp</pre></div>
+    dexec/lang-cpp foo.cpp</pre></div>
 
 <p>Arguments can be passed to the executing code using:</p>
 
@@ -137,12 +137,15 @@ Hello, World!
 <li><a href="https://github.com/docker-exec/haskell">Haskell</a></li>
 <li><a href="https://github.com/docker-exec/java">Java</a></li>
 <li><a href="https://github.com/docker-exec/lisp">Lisp</a></li>
+<li><a href="https://github.com/docker-exec/lua">Lua</a></li>
+<li><a href="https://github.com/docker-exec/nim">Nim</a></li>
 <li><a href="https://github.com/docker-exec/node">Node JS</a></li>
 <li><a href="https://github.com/docker-exec/objc">Objective C</a></li>
 <li><a href="https://github.com/docker-exec/ocaml">OCaml</a></li>
 <li><a href="https://github.com/docker-exec/perl">Perl</a></li>
 <li><a href="https://github.com/docker-exec/php">PHP</a></li>
 <li><a href="https://github.com/docker-exec/python">Python</a></li>
+<li><a href="https://github.com/docker-exec/r">R</a></li>
 <li><a href="https://github.com/docker-exec/racket">Racket</a></li>
 <li><a href="https://github.com/docker-exec/ruby">Ruby</a></li>
 <li><a href="https://github.com/docker-exec/rust">Rust</a></li>
